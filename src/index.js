@@ -67,17 +67,22 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  // const pizzas = [];
+  const numPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Out menu</h2>
-      <ul className="pizzas">
-        {pizzaData.map((pizza) => (
-          <Pizza 
-          pizzaObj={pizza}
-          key={pizza.name}
-          />
-        ))}
-      </ul>
+      {numPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p>We're still working with our menu. Please come back later :)</p>
+      )}
 
       {/* <Pizza
         name="Pizza Spinaci"
@@ -129,15 +134,16 @@ function Footer() {
   const openHour = 12;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
-  console.log(isOpen);
-  const DateTime = new Date().toLocaleDateString();
 
-  let shopStatus;
-  if (isOpen === true) {
-    shopStatus = "Open";
-  } else {
-    shopStatus = "close";
-  }
+  // console.log(isOpen);
+  // const DateTime = new Date().toLocaleDateString();
+
+  // let shopStatus;
+  // if (isOpen === true) {
+  //   shopStatus = `We're open until ${closeHour}:00. Come visit us or order online.`;
+  // } else {
+  //   shopStatus = `We are currently close. visit us at ${openHour}`;
+  // }
 
   // if(hour >= openHour && hour <= closeHour){
   //   alert("We are currently open");
@@ -147,12 +153,24 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {DateTime}. We are currently {shopStatus}
+      {isOpen ? (
+        <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+      ) : (
+        <p>We are happy to welcome you between {openHour} to {closeHour}</p>
+      )}
+
+      {/* <div className="order">
+        {shopStatus}
+        <button className="btn">Order</button>
+      </div> */}
+
     </footer>
   );
 }
 
 function Pizza(props) {
+
+  if(props.pizzaObj.soldOut) return null;
   return (
     <li className="pizza">
       <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
